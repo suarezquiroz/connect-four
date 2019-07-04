@@ -1,0 +1,7 @@
+<div class="board">
+  <div *ngFor="let row of board, index as rowIndex" class="row">
+    <div *ngFor="let column of row, index as columnIndex" class="column">
+      <div class="circle">{{ board[rowIndex][columnIndex] }}</div>
+    </div>
+  </div>
+</div>

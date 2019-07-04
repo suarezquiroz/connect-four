@@ -1,0 +1,11 @@
+.row {
+  display: flex;
+}
+
+.circle {
+  border: 1px solid black;  
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  margin: 5px;
+}
