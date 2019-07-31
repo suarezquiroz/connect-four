@@ -3,15 +3,19 @@
 .board {
   background-color: $blue-color;
   border: 1px solid $black-color;
-  width:500px;
+  width: 500px;
   display: flex;
-  flex-direction: column;
   justify-content: center;
 }
 
 .row {
   display: flex;
   justify-content: center;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
 }
 
 .circle {
@@ -21,4 +25,5 @@
   width: 50px;
   height: 50px;
   margin: 10px;
+  cursor: pointer;
 }
