@@ -1,14 +1,22 @@
-<div class="board">
+<div  
+  #boardElement
+  class="board">
   <div *ngFor="let column of board, index as columnIndex" class="column">
     <div *ngFor="let row of column, index as rowIndex" class="row">
+      <div class="disc"
+        *ngIf="board[columnIndex][rowIndex] != 'unset'"
+        [ngStyle]="{'background-color': board[columnIndex][rowIndex]}">
+      </div>
       <div class="circle"
         (click)="addDisc(columnIndex)">
-      </div>
-      <div class="disc"
-        *ngIf="board[columnIndex][rowIndex] != 'none'"
-        [ngStyle]="{'background-color': board[columnIndex][rowIndex]}">
       </div>
     </div>
   </div>
 </div>
-<div *ngIf="winner">Winner: <span [ngStyle]="{'color': winner}">{{winner}}</span></div>
+<div class="restart" *ngIf="started" (click)="restart()">RESTART</div>
+<div *ngIf="winner" class="winner">Winner: <span class="winner-color" [ngStyle]="{'color': winner}">{{winner}}</span></div>
+<div
+  #cursor
+  class="cursor"
+  [ngStyle]="{'background-color': currentColor}">
+</div>

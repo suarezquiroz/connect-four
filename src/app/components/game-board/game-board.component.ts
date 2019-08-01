@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 
 @Component({
   selector: 'c4-game-board',
@@ -11,10 +11,10 @@ export class GameBoardComponent implements OnInit {
   rows = 6;
   currentColor = 'red';
   winner = '';
+  started = false;
 
   @Input()
   get size(): number {
-    // transform value for display
     return this.n;
   }
   set size(size: number) {
@@ -22,28 +22,36 @@ export class GameBoardComponent implements OnInit {
     this.columns = 2 * size + 1;
     this.rows = size + 2;
   }
+
   board: string[][];
+
+  @ViewChild('boardElement')
+  boardElement: ElementRef<HTMLElement>;
+  @ViewChild('cursor')
+  cursor: ElementRef<HTMLElement>;
 
   constructor() { }
 
   ngOnInit() {
 
     // generate matrix
-    // 2N-1 x N+2 board, 5N+1 piece, 4 <= N <= 10
-    this.board = [
-      ['none', 'none', 'none', 'none', 'none', 'none'],
-      ['none', 'none', 'none', 'none', 'none', 'none'],
-      ['none', 'none', 'none', 'none', 'none', 'none'],
-      ['none', 'none', 'none', 'none', 'none', 'none'],
-      ['none', 'none', 'none', 'none', 'none', 'none'],
-      ['none', 'none', 'none', 'none', 'none', 'none'],
-      ['none', 'none', 'none', 'none', 'none', 'none']
-    ];
+    this.restart();
+
+    this.boardElement.nativeElement.addEventListener('mousemove', event => {
+      this.cursor.nativeElement.setAttribute(
+          'style',
+          `display: block;
+          background-color: ${this.currentColor};
+          top: ${event.pageY - 25}px;
+          left: ${event.pageX - 25}px`
+        );
+    });
 
   }
 
-  addDisc(column: number, color: string) {
-    const emptySlot = this.board[column].lastIndexOf('none');
+  addDisc(column: number) {
+    this.started = true;
+    const emptySlot = this.board[column].lastIndexOf('unset');
     if (emptySlot !== -1) {
       this.board[column][emptySlot] = this.currentColor;
       this.checkConnect4();
@@ -96,7 +104,6 @@ export class GameBoardComponent implements OnInit {
             // check right
             checkDirection(col, row, 1, 0)
           ) {
-            console.log('colorLayer', colorLayer);
             this.winner = this.currentColor;
             break;
           }
@@ -109,4 +116,14 @@ export class GameBoardComponent implements OnInit {
 
   }
 
+    // 2N-1 x N+2 board, 5N+1 piece, 4 <= N <= 10
+  restart() {
+    this.board = (new Array(2 * this.n - 1)).fill([]);
+    this.board = this.board.map( column => {
+      return (new Array(+this.n + 2).fill('unset'));
+    });
+
+    this.started = false;
+    this.winner = '';
+  }
 }
