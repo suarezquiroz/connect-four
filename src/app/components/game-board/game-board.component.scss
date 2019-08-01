@@ -11,6 +11,7 @@
 .row {
   display: flex;
   justify-content: center;
+  position: relative;
 }
 
 .column {
@@ -20,10 +21,20 @@
 
 .circle {
   background-color: $white-color;
-  border: 1px solid $black-color;  
+  border: 1px solid $gray-color;  
   border-radius: 50%;
   width: 50px;
   height: 50px;
   margin: 10px;
   cursor: pointer;
+  z-index: 1;
+}
+
+.disc {
+  position: absolute;
+  z-index: 2;
+  top: 11px;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
 }
